@@ -2,10 +2,7 @@ package cmd
 
 import (
 	"errors"
-	"fmt"
-	"os"
-	"os/exec"
-	"strings"
+	"log"
 
 	"github.com/AlecAivazis/survey/v2"
 	"github.com/spf13/cobra"
@@ -47,7 +44,7 @@ var qs = []*survey.Question{
 var newCmd = &cobra.Command{
 	Use:   "new",
 	Short: "Command to create new Phoenix project",
-	RunE: func(cmd *cobra.Command, args []string) error {
+	Run: func(cmd *cobra.Command, args []string) {
 		answers := struct {
 			Name     string
 			Umbrella bool
@@ -62,7 +59,8 @@ var newCmd = &cobra.Command{
 		err := survey.Ask(qs, &answers)
 
 		if err != nil {
-			return err
+			log.Fatal(err)
+			return
 		}
 
 		options := []string{"phx.new", answers.Name}
@@ -80,13 +78,7 @@ var newCmd = &cobra.Command{
 			options = append(options, "--no-live")
 		}
 
-		fmt.Printf("%s\n", strings.Join(options, " "))
-		shellCmd := exec.Command("mix", options...)
-
-		shellCmd.Stdin = os.Stdin
-		shellCmd.Stdout = os.Stdout
-		shellCmd.Stderr = os.Stderr
-		return shellCmd.Run()
+		runMixCmd(options)
 	},
 }
 
