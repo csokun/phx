@@ -24,19 +24,22 @@ var contextCmd = &cobra.Command{
 		contextQs := []*survey.Question{
 			{
 				Name:      "name",
-				Prompt:    &survey.Input{Message: "Context name: "},
+				Prompt:    &survey.Input{Message: "Context name (Plural noun): ", Help: "e.g Accounts"},
 				Validate:  survey.Required,
 				Transform: survey.Title,
 			},
 			{
 				Name:      "module",
-				Prompt:    &survey.Input{Message: "Module name: ", Help: "e.g User"},
+				Prompt:    &survey.Input{Message: "Schema module name (Singular noun): ", Help: "e.g User"},
 				Validate:  survey.Required,
 				Transform: survey.Title,
 			},
 			{
 				Name:     "fields",
-				Prompt:   &survey.Input{Message: "Columns: ", Help: "name:string age:integer"},
+        Prompt:   &survey.Input{
+          Message: "Columns definition (e.g field_name:field_type): ", 
+          Help: "Field type :integer :float :decimal :boolean :map :string :array :references :text :date :time :utc_datetime :uuid :binary :enum"
+        },
 				Validate: survey.Required,
 				Transform: func(ans interface{}) (newAns interface{}) {
 					s, ok := ans.(string)
@@ -46,16 +49,23 @@ var contextCmd = &cobra.Command{
 					return strings.Split(s, " ")
 				},
 			},
+			{
+				Name:     "binaryId",
+				Prompt:   &survey.Confirm{Message: "Schema's primary key use binary?"},
+				Validate: survey.Required,
+			},
 		}
 
 		answers := struct {
-			Name   string
-			Module string
-			Fields []string
+			Name     string
+			Module   string
+			Fields   []string
+			BinaryId bool
 		}{
-			Name:   "",
-			Module: "",
-			Fields: []string{},
+			Name:     "",
+			Module:   "",
+			Fields:   []string{},
+			BinaryId: true,
 		}
 
 		err := survey.Ask(contextQs, &answers)
@@ -75,13 +85,41 @@ var contextCmd = &cobra.Command{
 			strings.ToLower(tableName),
 		}
 		options = append(options, answers.Fields...)
+		if answers.BinaryId {
+			options = append(options, "--binary-id")
+		}
 
 		runMixCmd(options)
+	},
+}
+
+var presenceCmd = &cobra.Command{
+	Use:   "presence",
+	Short: "Generates a Presence tracker.",
+	Run: func(cmd *cobra.Command, args []string) {
+		presenceQs := []*survey.Question{
+			{
+				Name:     "name",
+				Prompt:   &survey.Input{Message: "Module name of the Presence tracker: "},
+				Validate: survey.Required,
+			},
+		}
+
+		answers := struct{ Name string }{Name: ""}
+
+		err := survey.Ask(presenceQs, &answers)
+
+		if err != nil {
+			log.Fatal(err)
+			return
+		}
+
+		runMixCmd([]string{"phx.gen.presence", answers.Name})
 	},
 }
 
 func init() {
 	RootCmd.AddCommand(genCmd)
 
-	genCmd.AddCommand(contextCmd)
+	genCmd.AddCommand(contextCmd, presenceCmd)
 }
