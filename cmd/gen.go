@@ -35,11 +35,11 @@ var contextCmd = &cobra.Command{
 				Transform: survey.Title,
 			},
 			{
-				Name:     "fields",
-        Prompt:   &survey.Input{
-          Message: "Columns definition (e.g field_name:field_type): ", 
-          Help: "Field type :integer :float :decimal :boolean :map :string :array :references :text :date :time :utc_datetime :uuid :binary :enum"
-        },
+				Name: "fields",
+				Prompt: &survey.Input{
+					Message: "Columns definition (e.g field_name:field_type): ",
+					Help:    "Field type :integer :float :decimal :boolean :map :string :array :references :text :date :time :utc_datetime :uuid :binary :enum",
+				},
 				Validate: survey.Required,
 				Transform: func(ans interface{}) (newAns interface{}) {
 					s, ok := ans.(string)
