@@ -13,9 +13,8 @@ var qs = []*survey.Question{
 		Name:   "name",
 		Prompt: &survey.Input{Message: "Create new OTP application:"},
 		Validate: func(val interface{}) error {
-			// since we are validating an Input, the assertion will always succeed
-			if str, ok := val.(string); !ok || len(str) > 10 {
-				return errors.New("This response cannot be longer than 10 characters.")
+			if str, ok := val.(string); !ok || len(str) > 20 {
+				return errors.New("Application name is longer than 20 characters.")
 			}
 			return nil
 		},
