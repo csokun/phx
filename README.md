@@ -6,8 +6,8 @@ The framework built with a bunch of task to generate boilerplate code aka `mix` 
 
 ## Why?
 
-What wrong with `mix phx.**`? I keep forgetting which argument come first.
-So, I build this utility app which wrapping `mix phx*` command with appropriate prompt messages.
+What wrong with `mix phx.**`? I keep forgetting which argument comes first.
+So, I decided to write this `phx` app to wrap `mix phx*` command with appropriate prompt messages.
 
 ## Installation
 
@@ -33,4 +33,14 @@ Flags:
   -h, --help   help for phx
 
 Use "phx [command] --help" for more information about a command.
+```
+
+Generate Liveview:
+
+```bash
+$ phx gen live
+? Context name (Plural noun):  Accounts
+? Schema module name (Singular noun):  User
+? Columns definition (e.g field_name:field_type):  name:string age:integer
+? Schema's primary key use binary? (y/N) y
 ```
