@@ -12,7 +12,7 @@ So, I decided to write this `phx` app to wrap `mix phx*` command with appropriat
 ## Installation
 
 ```bash
-go install github.com/csokun/phx.git
+go install github.com/csokun/phx@v0.1.0
 ```
 
 ## Usage
