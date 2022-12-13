@@ -1,10 +1,13 @@
 # Phoenix Framework CLI
 
-Wrapping `mix phx*` command with appropriate prompt messages.
+[Phoenix Framework](https://www.phoenixframework.org/) enables developer to build rich, interactive web applications quickly, with less code and fewer moving parts.
+
+The framework built with a bunch of task to generate boilerplate code aka `mix` tasks.
 
 ## Why?
 
 What wrong with `mix phx.**`? I keep forgetting which argument come first.
+So, I build this utility app which wrapping `mix phx*` command with appropriate prompt messages.
 
 ## Installation
 
