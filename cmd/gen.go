@@ -111,6 +111,12 @@ var jsonCmd = &cobra.Command{
 	Run:   runStandardGenerator("phx.gen.json"),
 }
 
+var htmlCmd = &cobra.Command{
+	Use:   "html",
+	Short: "Generates controller, views, and context for an HTML resource.",
+	Run:   runStandardGenerator("phx.gen.html"),
+}
+
 var presenceCmd = &cobra.Command{
 	Use:   "presence",
 	Short: "Generates a Presence tracker.",
